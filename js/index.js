@@ -7,3 +7,7 @@ function postContent(){
     }
     );
 }
+//ボタンにクリックイベントを設定
+$("#postButton").on("click",function(){
+	postContent();
+});

@@ -77,6 +77,7 @@ function changeFormtoLogin(){
 		changeFormtoSignUp();
 	});
 }
+//登録orログインボタンにクリックイベントを設定
 $("#changeSingUpButton").on("click",function(){
 	changeFormtoSignUp();
 });

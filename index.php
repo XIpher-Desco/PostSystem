@@ -34,6 +34,7 @@ $result = json_decode($db->query("SELECT uid,postDate,content FROM Posts ORDER B
         <h2><?php echo $_SESSION["uid"] ?>でログインしています。</h2>
         <a href="./logout.php">ログアウト</a>
         <input type="text" class="form-control" name="postContent" id="postContentForm" size="10">
+        <button type="button" id="postButton" class="btn btn-primary">投稿</button>
     <!-- Sessionが無い場合 -->
     <?php else: ?>
     	<h2>ログインしていません。</h2>
