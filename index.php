@@ -28,19 +28,28 @@ $result = json_decode($db->query("SELECT uid,postDate,content FROM Posts ORDER B
     <div class="container contents">
     <div class="jumbotron">
     <h1>Hello, world!!</h1>
-    </div>
+    
     <!-- Sessionがある場合 -->
+    
     <?php if (isset($_SESSION["uid"])): ?>
         <h2><?php echo $_SESSION["uid"] ?>でログインしています。</h2>
         <a href="./logout.php">ログアウト</a>
-        <input type="text" class="form-control" name="postContent" id="postContentForm" size="10">
-        <button type="button" id="postButton" class="btn btn-primary">投稿</button>
+        </div>
+        <div class="container">
+        <div id="postForm">
+            <div class="input-group">
+                <span class="input-group-addon" id="basic-addon1">今何してる？</span>
+                <input type="text" class="form-control" name="postContent" id="postContentForm" size="10">
+            </div>
+            <button type="button" id="postButton" class="btn btn-primary">投稿</button>
+        </div>
     <!-- Sessionが無い場合 -->
     <?php else: ?>
     	<h2>ログインしていません。</h2>
         <a href="./login.php">ログイン</a>
+        </div>
+        <div class="container">
     <?php endif; ?>
-    <div class="container">
   		<table class="table">
 	    	<thead>
 	      		<tr>
@@ -69,7 +78,7 @@ $result = json_decode($db->query("SELECT uid,postDate,content FROM Posts ORDER B
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
         <!-- Include all compiled plugins (below), or include individual files as needed -->
         <script src="js/bootstrap.min.js"></script>
-        <script src="js/login.js"></script>
+        <script src="js/index.js"></script>
     </div>
     </body>
 </html>

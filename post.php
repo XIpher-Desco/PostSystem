@@ -10,7 +10,8 @@ $escapedPostContent = $db->escape($_POST['postContent']);
 //投稿システム
 if($_COOKIE['my_id']==$_SESSION["uid"]){
 	$now = date('Y/m/d H:i:s');
-	$result = json_decode($db->query("INSERT INTO Posts (uid,postDate,content) VALUES ('$_SESSION["uid"]','$now','$escapedPostContent')"));
-	print_f($result->status);
+	$postId = $_SESSION['uid'];
+	$result = json_decode($db->query("INSERT INTO Posts (uid,postDate,content) VALUES ('$postId','$now','$escapedPostContent')"));
+	echo json_encode($result->status);
 }
 ?>
