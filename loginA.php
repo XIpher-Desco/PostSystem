@@ -19,7 +19,7 @@ $result = json_decode($db->query("SELECT * FROM Users WHERE uid = '$escapedId'")
 if($result->result[0]->uid == $escapedId && password_verify($escapedPass,$result->result[0]->hashpw)){
     //認証成功、Session開始
     //Xipher以下でのみ送信、HTTPSのみでCookieをサーバに送信
-    setcookie('my_id', $untrustedId, 0,'/Xipher/','krlab.info.kochi-tech.ac.jp',1);
+    setcookie('my_id', $escapedId, 0,'','',1);
     //Session開始,uidがサーバーにある=認証されている。
     $_SESSION["uid"]=$escapedId;
     $message ='ユーザーを認証しました。';

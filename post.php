@@ -13,5 +13,12 @@ if($_COOKIE['my_id']==$_SESSION["uid"]){
 	$postId = $_SESSION['uid'];
 	$result = json_decode($db->query("INSERT INTO Posts (uid,postDate,content) VALUES ('$postId','$now','$escapedPostContent')"));
 	echo json_encode($result->status);
+}else{
+	http_response_code( 400 ) ;
+    return json_encode (
+        array (
+            "status"=>"400 Bad_Request"
+        )
+    );
 }
 ?>
