@@ -21,4 +21,3 @@ if($_COOKIE['my_id']==$_SESSION["uid"]){
         )
     );
 }
-?>

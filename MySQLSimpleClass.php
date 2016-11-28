@@ -99,4 +99,3 @@ class MySQLSimpleClass
         return htmlspecialchars($this->mysqli->real_escape_string($str));
     }
 }
-?>
