@@ -1,13 +1,12 @@
 <?php
 //ini_set('display_errors', 1);
 require_once"./utility.php";
-require_once"./MySQLSimpleClass.php";
+require_once"./MySQLPDOClass.php";
 
 session_start();
-
-$db = new MySQLSimpleClass();
 //投稿閲覧システム
-$result = json_decode($db->query("SELECT uid,postDate,content FROM Posts ORDER BY postid desc LIMIT 10"));
+$db = new MySQLPDOClass();
+$result = json_decode($db->getPosts(15));
 ?>
 <html lang="ja">
     <head>

@@ -3,7 +3,7 @@ function postContent(){
 	var postContentText = $("#postContentForm").val();
 	$("#postContentForm").val("");
 	//フォームの内容が空でなければ
-	if(postContent!=""){
+	if(postContentText!=""){
 		$.post("post.php",
 			{ postContent: postContentText},
 			function(data){
@@ -12,7 +12,8 @@ function postContent(){
 					//tureだったら
 					location.reload()
 				}
-			});
+			}
+		);
 	}
 
 }
