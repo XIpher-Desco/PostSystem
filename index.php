@@ -2,6 +2,7 @@
 //ini_set('display_errors', 1);
 require_once"./utility.php";
 require_once"./MySQLPDOClass.php";
+require_once"redirectHttps.php";
 
 session_start();
 //投稿閲覧システム
