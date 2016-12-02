@@ -45,21 +45,21 @@
 	- グループ単位に投稿
 
 ##指摘事項
-- PHPのバージョン違い 5.6にしてください
+- PHPのバージョン違い 5.6にしてください OK 
 - セキュリティ
 	- クロスサイトリクエストフォージェリ
 	- クロスサイトスクリプティング
-	- HTMLSPECIALCHARAS
+	- HTMLSPECIALCHARAS OK
 		- 関数の引数指定
-    - post.php postcontentの有無
+    - post.php postcontentの有無 
     - 与えられた値が配列じゃないか？（例）
     - Let's Encrypt使う
-    - SQLを自動で生成してくれれば楽
-    - プレースホルダを使う（int-char）
-    - PDO（my_sqli）以外（shift_jisはダメ）
+    - SQLを自動で生成してくれれば楽 OK
+    - プレースホルダを使う（int-char） OK
+    - PDO（my_sqli）以外（shift_jisはダメ） OK
 - DBインデックス
     - 文字コード UTF-8 MU4
-- PHP終了タグをなくしておくとよい
+- PHP終了タグをなくしておくとよい OK
 - ファイル単位で切り分ける
 - DBの設定ファイル等を別に切り分ける（userのデータ）
 ##今後の展望
