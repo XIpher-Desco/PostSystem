@@ -1,7 +1,7 @@
 <?php
-
 require_once"./utility.php";
 require_once"./MySQLSimpleClass.php";
+require_once"./MySQLPDOClass.php";
 
 $untrustedId = $_POST['my_id'];
 $untrustedPass = $_POST['password'];
@@ -9,12 +9,12 @@ $untrustedMailaddress = $_POST['mailaddress'];
 //$save = $_POST['save'];
 
 
-$db = new MySQLSimpleClass();
+$db = new MySQLPDOClass();
 $escapedId = $db->escape($untrustedId);
 $escapedPass = $db->escape($untrustedPass);
 $escapedMailaddress = $db->escape($untrustedMailaddress);
 $hashPass = password_hash($escapedPass,PASSWORD_DEFAULT);
-$result = json_decode($db->query("INSERT INTO Users (uid,hashpw,mailaddress) VALUES ('$escapedId','$hashPass','$escapedMailaddress')"));
+$result = json_decode($db->registerUser($escapedId,$hashPass,$escapedMailaddress));
 //pure_dump($result->result[0]->uid);
 
 //cookieに保存

@@ -12,7 +12,6 @@ $untrustedPass = $_POST['password'];
 $db = new MySQLPDOClass();
 $escapedId = $db->escape($untrustedId);
 $escapedPass = $db->escape($untrustedPass);
-$result = json_decode($db->query("SELECT * FROM Users WHERE uid = '$escapedId'"));
 //pure_dump($result->result[0]->uid);
 
 //cookieに保存
@@ -25,7 +24,6 @@ if($db->authUser($escapedId,$escapedPass)){
     $message ='ユーザーを認証しました。';
     $message .='<br>';
     $message .='ID:'.$_SESSION["uid"].'<br>';
-    $message .='PW:'.$result->result[0]->hashpw;
 }else{
     setcookie('my_id','');
     $message = 'IDまたはPWが間違っています';

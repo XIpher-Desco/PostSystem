@@ -1,7 +1,7 @@
 <?php 
 
 //setcookieやSession変数は使わないこと！
-ini_set('display_errors', 1);
+//ini_set('display_errors', 1);
 require_once"./utility.php";
 require_once"./header.php";
 //require_once"./classHeader.php";
@@ -109,7 +109,7 @@ class MySQLPDOClass
 	}
 
 	//新規登録
-	function registerUser($uid, $hashpw, $mail, $nickname){
+	function registerUser($uid, $hashpw, $mail, $nickname=""){
 		//Userチェック 同じuidは登録出来ないようにする
 		if($this->existUser($uid)){
 			$rtn = [
@@ -119,7 +119,7 @@ class MySQLPDOClass
 			];
 			return json_encode($rtn);
 		}
-		$sql = 'INSERT INTO Users (uid,hashpw,mailaddress,nickname) VALUES (:uid, :hashpw, :mail, :nickname';
+		$sql = 'INSERT INTO Users (uid,hashpw,mailaddress,nickname) VALUES (:uid, :hashpw, :mail, :nickname)';
 		
 		$stmt = $this->pdo->prepare($sql);
 		$stmt->bindParam(':uid',$uid,PDO::PARAM_STR);
