@@ -1,4 +1,7 @@
 <?php
+if (array_shift(get_included_files()) === __FILE__) {
+    die('エラー：正しいURLを指定してください。');
+}
 // var_dumpを綺麗に出力！これ大事
 function pure_dump($var){
     echo "<pre>";
