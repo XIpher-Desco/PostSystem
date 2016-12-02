@@ -1,13 +1,22 @@
 <?php 
+
+//setcookieやSession変数は使わないこと！
 ini_set('display_errors', 1);
 require_once"./utility.php";
 require_once"./header.php";
+//require_once"./classHeader.php";
+
+if (array_shift(get_included_files()) === __FILE__) {
+    die('エラー：正しいURLを指定してください。');
+}
+
 
 class MySQLPDOClass
 {
 	public $pdo;
-	private $tableWhiteList;
 	//アクセスを許可するテーブル名
+	private $tableWhiteList;
+	//アクセスを許可するカラム名
 	private $columnWhiteList;
 	
 
@@ -24,7 +33,7 @@ class MySQLPDOClass
  		//SQL実行時にエラーが発生すると例外を投げる
  		$this->pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
  		$this->tableWhiteList = ['Users','Posts'];
- 		$this->columnWhiteList[$this->tableWhiteList[0]] = ['uid','hashpw'];
+ 		$this->columnWhiteList[$this->tableWhiteList[0]] = ['uid','hashpw','nikname'];
 		$this->columnWhiteList[$this->tableWhiteList[1]] = ['uid','postDate','content'];
 	}
 	//SQL実行型（ステートメント使う）
@@ -52,7 +61,7 @@ class MySQLPDOClass
 		];
 		return $rtn;
 	}
-	//セレクト文テーブルとカラムと条件(WHERE)を指定できる
+	//セレクト文テーブルとカラムと条件(WHERE)を指定できる(予定)
 	function select($table = 'Posts', $col = ['uid','postDate','content'], $con){
 		//テーブルチェック
 		if(in_array($table,$this->tableWhiteList)){
@@ -81,7 +90,16 @@ class MySQLPDOClass
 	}
 	//記事を投稿
 	function postContent($uid, $content){
-		$sql = 'INSERT INTO Posts (uid,postDate,content) VALUES (:postId,:now,:PostContent)'
+		//Userチェック 本当に存在するか？
+		if(!$this->existUser($uid)){
+			$rtn = [
+				'status'=>FALSE,
+				'result'=>"",
+				'error'=>'User not exist'
+			];
+			return json_encode($rtn);
+		}
+		$sql = 'INSERT INTO Posts (uid,postDate,content) VALUES (:postId,:now,:PostContent)';
 		$stmt = $this->pdo->prepare($sql);
 		$now = date('Y/m/d H:i:s');
 		$stmt->bindParam(':postId',$uid,PDO::PARAM_STR);
@@ -92,7 +110,7 @@ class MySQLPDOClass
 
 	//新規登録
 	function registerUser($uid, $hashpw, $mail, $nickname){
-		$sql = 'INSERT INTO Users (uid,hashpw,mailaddress,nickname) VALUES (:uid, :hashpw, :mail, :nickname';
+		//Userチェック 同じuidは登録出来ないようにする
 		if($this->existUser($uid)){
 			$rtn = [
 				'status'=>FALSE,
@@ -101,6 +119,8 @@ class MySQLPDOClass
 			];
 			return json_encode($rtn);
 		}
+		$sql = 'INSERT INTO Users (uid,hashpw,mailaddress,nickname) VALUES (:uid, :hashpw, :mail, :nickname';
+		
 		$stmt = $this->pdo->prepare($sql);
 		$stmt->bindParam(':uid',$uid,PDO::PARAM_STR);
 		$stmt->bindParam(':hashpw',$hashpw,PDO::PARAM_STR);
@@ -109,12 +129,23 @@ class MySQLPDOClass
 
 		return json_encode($this->execStatement($stmt));
 	}
+
 	//Userが存在するかどうか
 	function existUser($userName){
 		$sql = 'SELECT uid FROM Users WHERE uid = :userName';
 		$stmt = $this->pdo->prepare($sql);
-		$stmt->bintParam(':userName',$userName,PDO::PARAM_STR);
-		if($this->execStatement($stmt)['result'][0]){
+		$stmt->bindParam(':userName',$userName,PDO::PARAM_STR);
+		if(isset($this->execStatement($stmt)['result'][0])){
+			return true;
+		}
+		return false;
+	}
+	//User認証成功か失敗のみ判定
+	function authUser($uid,$password){
+		$sql = 'SELECT hashpw FROM Users WHERE uid = :uid';
+		$stmt = $this->pdo->prepare($sql);
+		$stmt->bindParam(':uid',$uid,PDO::PARAM_STR);
+		if(password_verify($password,$this->execStatement($stmt)['result'][0]['hashpw'])){
 			return true;
 		}
 		return false;
